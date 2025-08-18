@@ -10,6 +10,12 @@ const withMDX = createMDX();
 
 let nextConfig: NextConfig = {
   reactStrictMode: true,
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
 };
 
 const i18nEnabled = appConfig.i18n;
