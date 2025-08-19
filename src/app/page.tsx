@@ -8,6 +8,13 @@ import PricingSection from '@/components/pricing2';
 import StatsSection from '@/components/stats-2';
 import TestimonialsSection from '@/components/testimonials';
 
+export const metadata = {
+  title:
+    'ScratchStarter | From brilliant idea to deployed product in one afternoon. Less setup, maximum creativity.',
+  description:
+    'From brilliant idea to deployed product in one afternoon. Less setup, maximum creativity.',
+};
+
 export default function Home() {
   return (
     <ContentLayout>
