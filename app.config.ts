@@ -11,7 +11,8 @@ const appConfig: AppConfig = {
   content: true,
   seo: {
     title: 'Scratch Starter',
-    description: 'The library for building documentation sites',
+    description:
+      'From brilliant idea to deployed product in one afternoon. Less setup, maximum creativity.',
   },
   headerMenus: [
     { name: 'Features', href: '/#features' },
