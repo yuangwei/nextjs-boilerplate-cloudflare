@@ -26,9 +26,13 @@ const appConfig: AppConfig = {
     { group: 'Legal', items: [{ name: 'Privacy Policy', href: '#link' }] },
   ],
   socialLinks: [
+    {
+      name: 'Github',
+      href: 'https://github.com/scratchstarterdev',
+      icon: 'IconBrandGithub',
+    },
     { name: 'X', href: '#link', icon: 'IconBrandX' },
     { name: 'Instagram', href: '#link', icon: 'IconBrandInstagram' },
-    { name: 'Facebook', href: '#link', icon: 'IconBrandFacebook' },
   ],
 };
 
