@@ -26,6 +26,8 @@ This is a Next.js application configured to deploy on Cloudflare Workers using t
 - `pnpm lint` - Run ESLint
 - `pnpm format` - Format code with Prettier
 - `pnpm format:check` - Check code formatting without changes
+- `pnpm type-check` - Run TypeScript type checking without emitting files
+- `pnpm validate` - Run all checks (type-check, lint, format:check, build)
 
 ## Deployment Commands
 
@@ -217,6 +219,30 @@ When multiple valid approaches exist, choose based on:
 **OTHER**:
 
 - The project uses ES modules (`"type": "module"` in package.json)
-- Husky is configured for Git hooks with lint-staged for automated formatting
-- The application is minimal and serves as a starting point for Cloudflare Workers deployment
 - TypeScript paths are configured for `@/*` imports pointing to `src/*`
+- The application is minimal and serves as a starting point for Cloudflare Workers deployment
+
+## Git Hooks & Quality Assurance
+
+The project uses **Husky** for Git hooks to prevent broken code from being committed:
+
+### Pre-commit Hook (`.husky/pre-commit`)
+Automatically runs on every commit attempt:
+1. **lint-staged**: Formats and lints only staged files
+2. **TypeScript check**: Fast type checking (`tsc --noEmit`)
+3. **Build verification**: Full build to catch module resolution and other errors
+
+This catches issues like:
+- Import path errors (e.g., `./globals.css` instead of `../styles/globals.css`)
+- TypeScript compilation errors
+- Module resolution failures
+- Build configuration problems
+
+### Commit Message Hook (`.husky/commit-msg`)
+Enforces conventional commit format using commitlint:
+- `feat: add new feature`
+- `fix: resolve bug`
+- `docs: update documentation`
+
+### Manual Quality Checks
+Run `pnpm validate` to execute all quality checks manually before committing.

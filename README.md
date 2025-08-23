@@ -2,6 +2,10 @@
 
 A minimal Next.js application configured to deploy on Cloudflare Workers using the OpenNext Cloudflare adapter.
 
+## 🤖 AI-Friendly
+
+This template is designed to work seamlessly with AI development tools like Claude Code. It includes comprehensive documentation in `CLAUDE.md` with detailed development guidelines, architecture explanations, and coding standards to help AI assistants understand and contribute effectively to your project.
+
 ## Tech Stack
 
 - Next.js 15.4.6 with React 19
@@ -49,6 +53,10 @@ Generate Cloudflare types:
 ```bash
 pnpm cf-typegen
 ```
+
+## AI Development Guide
+
+For AI assistants and detailed development guidelines, see [CLAUDE.md](CLAUDE.md).
 
 ## License
 
