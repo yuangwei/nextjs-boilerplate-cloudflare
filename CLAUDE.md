@@ -131,6 +131,12 @@ Break complex work into 3-5 stages. Document in `docs/IMPLEMENTATION_PLAN.md`:
 
 ### Code Quality
 
+- **Language Standards**:
+  - All code comments and text content must be in English by default
+  - Variable names, function names, and documentation should use English
+  - Only use other languages when explicitly requested in the prompt
+  - This ensures consistency and international accessibility
+
 - **After generating code**:
   - Run `pnpm format` to ensure code formatting compliance
   - Verify code compiles and follows project conventions
