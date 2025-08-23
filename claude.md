@@ -1,281 +1,222 @@
-# Claude AI Development Rules
+# CLAUDE.md
 
-This document contains the development rules and guidelines for working with the Next.js Website Starter project. These rules should be followed by any AI assistant or developer working on this codebase.
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Core Development Philosophy
+## Project Overview
 
-- **Incremental progress over big bangs** - Make small, compilable changes
-- **Learning from existing code** - Study patterns before implementing
+This is a Next.js application configured to deploy on Cloudflare Workers using the OpenNext Cloudflare adapter. The project is a minimal boilerplate that uses:
+
+- Next.js 15.4.6 with React 19
+- TypeScript for type safety
+- Tailwind CSS for styling
+- OpenNext Cloudflare for deployment
+- ESLint and Prettier for code quality
+
+## Key Architecture
+
+- **App Router**: Uses Next.js App Router (`src/app/` directory structure)
+- **Cloudflare Workers**: Configured to deploy as Cloudflare Workers via `@opennextjs/cloudflare`
+- **TypeScript**: Strict TypeScript configuration with path aliases (`@/*` → `./src/*`)
+- **Styling**: Geist Sans and Geist Mono fonts are configured in `src/lib/fonts.ts`
+
+## Development Commands
+
+- `pnpm dev` - Start development server with Turbopack
+- `pnpm build` - Build the application for production
+- `pnpm lint` - Run ESLint
+- `pnpm format` - Format code with Prettier
+- `pnpm format:check` - Check code formatting without changes
+
+## Deployment Commands
+
+- `pnpm deploy` - Build and deploy to Cloudflare Workers
+- `pnpm preview` - Build and preview locally before deployment
+- `pnpm cf-typegen` - Generate TypeScript types for Cloudflare environment
+
+## Configuration Files
+
+- `wrangler.jsonc` - Cloudflare Workers configuration
+- `open-next.config.ts` - OpenNext Cloudflare adapter configuration
+- `next.config.ts` - Next.js configuration with Cloudflare dev support
+- `cloudflare-env.d.ts` - TypeScript definitions for Cloudflare environment
+
+## Project Structure
+
+```
+src/
+├── app/           # Next.js App Router pages
+│   ├── layout.tsx # Root layout with font configuration
+│   └── page.tsx   # Homepage
+├── lib/           # Utility functions and configurations
+│   └── fonts.ts   # Font definitions (Geist Sans/Mono)
+└── styles/        # Global CSS styles
+    └── globals.css
+```
+
+## Philosophy
+
+### Core Beliefs
+
+- **Incremental progress over big bangs** - Small changes that compile and pass tests
+- **Learning from existing code** - Study and plan before implementing
 - **Pragmatic over dogmatic** - Adapt to project reality
-- **Clear intent over clever code** - Choose boring, obvious solutions
-- **All code comments and default text must be in English** - Maintain consistency in documentation
+- **Clear intent over clever code** - Be boring and obvious
 
-## Project Architecture
+### Simplicity Means
 
-### Directory Structure Rules
+- Single responsibility per function/class
+- Avoid premature abstractions
+- No clever tricks - choose the boring solution
+- If you need to explain it, it's too complex
 
-**Next.js App Router Structure:**
+## Process
 
-- Authentication pages in `src/app/auth/` (login, sign-up)
-- Marketing/public pages in `src/app/` (home, blog, about)
-- Dynamic routes use bracket notation: `[slug]`, `[page]`
-- API routes in `src/app/api/` following REST conventions
-- Protected app routes in `src/app/app/`
+### 1. Planning & Staging
 
-**Component Organization:**
+Break complex work into 3-5 stages. Document in `docs/IMPLEMENTATION_PLAN.md`:
 
-- UI primitives in `src/components/ui/` (shadcn components only)
-- Layout components in `src/components/layouts/` (logo, header, footer, theme)
-- Feature-specific components in `src/components/[feature]/` (auth, content, email)
-- MagicUI components in `src/components/magicui/`
+```markdown
+## Stage N: [Name]
 
-**Configuration Rules:**
-
-- Main config in `app.config.ts` with types from `app.config.d.ts`
-- Content config in `source.config.ts` for fumadocs
-- Environment variables accessed only within config files
-- Use `@@/` alias for root directory imports
-
-### Technology Stack Constraints
-
-**Authentication & Database:**
-
-- Use Better Auth for authentication (`better-auth`)
-- Use Drizzle ORM with PostgreSQL
-- Use Resend for email delivery
-- Use Cloudflare Turnstile for CAPTCHA
-
-**Content Management:**
-
-- Use Fumadocs for blog/content (`fumadocs-core`, `fumadocs-mdx`)
-- MDX files with frontmatter in `content/blog/[locale]/`
-- Static pages in `content/page/[locale]/`
-- Content collections defined in `source.config.ts`
-
-**Internationalization:**
-
-- Use `next-intl` for translations
-- Configure locales in `app.config.ts` with `i18n` property
-- Translation files in `locales/[locale].json`
-- Use nested objects: `{ "auth": { "login": "Login" } }`
-
-## Code Quality Standards
-
-### TypeScript Rules
-
-- Always use proper TypeScript types, never `any`
-- Use interfaces from `app.config.d.ts` for configurations
-- Implement proper error handling with descriptive messages
-- Use type-safe environment variable access
-
-### React & Next.js Rules
-
-- Use server components by default, client components only when needed
-- Mark client components with `'use client'` directive
-- Use `async/await` for server-side data fetching
-- Implement proper loading and error states
-
-### Styling Rules
-
-- Use Tailwind CSS exclusively for styling
-- Use `cn()` utility from `@/lib/utils` for conditional classes
-- Follow CSS variables for theme-aware styling
-- Use design tokens from `src/styles/globals.css`
-
-### Component Rules
-
-- Use shadcn/ui components as base primitives
-- Install new components with: `npx shadcn@latest add [component-name]`
-- Use Lucide React for icons (`lucide-react`)
-- Use Tabler React for icons (`@tabler/icons-react`)
-- Follow composition over inheritance pattern
-
-## Implementation Guidelines
-
-### Configuration System
-
-```typescript
-// Use typed config object
-import { AppConfig } from './app.config.d';
-import packageJson from './package.json';
-
-const appConfig: AppConfig = {
-  appPrefix: packageJson.name,
-  baseUrl: process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000',
-  i18n: {
-    defaultLocale: 'en',
-    locales: [{ code: 'en', name: 'English', flag: '🇺🇸' }],
-  },
-  content: true,
-  seo: { title: 'App Title', description: 'App Description' },
-};
+**Goal**: [Specific deliverable]
+**Success Criteria**: [Testable outcomes]
+**Tests**: [Specific test cases]
+**Status**: [Not Started|In Progress|Complete]
 ```
 
-### Blog Content Rules
+- Update status as you progress
+- Remove file when all stages are done
 
-```yaml
-# Required MDX frontmatter
-title: 'Required - Article title'
-description: 'Required - Article description'
-date: 'Required - YYYY-MM-DD format'
-tags: ['Optional - Array of tags']
-featured: false # Optional - Boolean
-readTime: 'Optional - e.g., "5 min read"'
-author: 'Optional - Author name'
-```
+### 2. Implementation Flow
 
-### Authentication Implementation
+1. **Understand** - Study existing patterns in codebase
+2. **Test** - Write test first (red)
+3. **Implement** - Minimal code to pass (green)
+4. **Refactor** - Clean up with tests passing
+5. **Commit** - With clear message linking to plan
 
-- Cookie prefix must match `appConfig.appPrefix`
-- Use `sendWelcomeEmail()` on successful registration
-- Implement CAPTCHA on sign-up and login endpoints with Cloudflare Turnstile
-- Support Google OAuth with proper configuration
-- Better Auth configuration in `src/lib/auth.ts`
+### 3. When Stuck (After 3 Attempts)
 
-### Email Templates
+**CRITICAL**: Maximum 3 attempts per issue, then STOP.
 
-- Use React Email components in `src/components/email/`
-- Configure Resend in `src/lib/email.ts`
-- Welcome email component: `sign-up-success.tsx`
+1. **Document what failed**:
+   - What you tried
+   - Specific error messages
+   - Why you think it failed
 
-## File Creation Rules
+2. **Research alternatives**:
+   - Find 2-3 similar implementations
+   - Note different approaches used
 
-### When creating new files:
+3. **Question fundamentals**:
+   - Is this the right abstraction level?
+   - Can this be split into smaller problems?
+   - Is there a simpler approach entirely?
 
-**Components:**
+4. **Try different angle**:
+   - Different library/framework feature?
+   - Different architectural pattern?
+   - Remove abstraction instead of adding?
 
-- UI components go in `src/components/ui/[component].tsx`
-- Layout components go in `src/components/layouts/[component].tsx`
-- Feature components go in `src/components/[feature]/[component].tsx`
+## Technical Standards
 
-**Pages:**
+### Architecture Principles
 
-- Use proper Next.js App Router structure
-- Server components for data fetching
-- Client components for interactivity
+- **Composition over inheritance** - Use dependency injection
+- **Interfaces over singletons** - Enable testing and flexibility
+- **Explicit over implicit** - Clear data flow and dependencies
+- **Test-driven when possible** - Never disable tests, fix them
 
-**API Routes:**
+### Code Quality
 
-- Follow REST conventions in `src/app/api/`
-- Implement proper error handling
-- Use Better Auth for authentication endpoints
+- **After generating code**:
+  - Run `pnpm format` to ensure code formatting compliance
+  - Verify code compiles and follows project conventions
 
-## Import Rules
+- **Every commit must**:
+  - Compile successfully
+  - Pass all existing tests
+  - Include tests for new functionality
+  - Follow project formatting/linting
+  - Use conventional commit message format (enforced by commitlint)
 
-### Import Patterns:
+- **Before committing**:
+  - Run formatters/linters
+  - Self-review changes
+  - Ensure commit message follows conventional format: `type(scope): description`
+  - Commit message types: feat, fix, docs, style, refactor, perf, test, build, ci, chore, revert
 
-```typescript
-// Config imports (use @@/ for root)
-import appConfig from '@@/app.config';
-import { AppConfig } from '@@/app.config.d';
+### Error Handling
 
-import Logo from '@/components/layouts/logo';
-// Component imports
-import { Button } from '@/components/ui/button';
-// Content imports
-import { blogSource, pageSource } from '@/lib/content';
-// Utility imports
-import { cn } from '@/lib/utils';
-import { formatDate } from '@/lib/utils';
-```
+- Fail fast with descriptive messages
+- Include context for debugging
+- Handle errors at appropriate level
+- Never silently swallow exceptions
 
-## Environment Variables
+## Decision Framework
 
-### Required Environment Variables:
+When multiple valid approaches exist, choose based on:
 
-```bash
-# Database
-DATABASE_URL="postgresql://..."
+1. **Testability** - Can I easily test this?
+2. **Readability** - Will someone understand this in 6 months?
+3. **Consistency** - Does this match project patterns?
+4. **Simplicity** - Is this the simplest solution that works?
+5. **Reversibility** - How hard to change later?
 
-# Authentication
-BETTER_AUTH_SECRET="your-secret-key"
-GOOGLE_CLIENT_ID="your-google-client-id"
-GOOGLE_CLIENT_SECRET="your-google-client-secret"
+## Project Integration
 
-# Email
-RESEND_API_KEY="your-resend-api-key"
+### Learning the Codebase
 
-# CAPTCHA
-TURNSTILE_SECRET_KEY="your-cloudflare-turnstile-secret"
+- Find 3 similar features/components
+- Identify common patterns and conventions
+- Use same libraries/utilities when possible
+- Follow existing test patterns
 
-# Application
-NEXT_PUBLIC_BASE_URL="http://localhost:3000"
-```
+### Tooling
 
-## Testing & Quality
+- Use project's existing build system
+- Use project's test framework
+- Use project's formatter/linter settings
+- Don't introduce new tools without strong justification
 
-### Before Every Commit:
+## Quality Gates
 
-- [ ] Code compiles successfully
-- [ ] All tests pass
+### Definition of Done
+
+- [ ] Tests written and passing
+- [ ] Code follows project conventions
 - [ ] No linter/formatter warnings
-- [ ] Environment variables properly configured
-- [ ] No hardcoded values, use config system
+- [ ] Commit messages are clear
+- [ ] Implementation matches plan
+- [ ] No TODOs without issue numbers
 
-### Code Review Checklist:
+### Test Guidelines
 
-- [ ] Uses existing patterns and conventions
-- [ ] Proper TypeScript types
-- [ ] Follows directory structure rules
-- [ ] Uses config system for settings
-- [ ] Implements proper error handling
+- Test behavior, not implementation
+- One assertion per test when possible
+- Clear test names describing scenario
+- Use existing test utilities/helpers
+- Tests should be deterministic
 
-## Security Rules
+## Important Reminders
 
-- Never commit environment variables
-- Use type-safe environment variable validation
-- Implement proper CORS and CSRF protection
-- Use HTTPS in production
-- Implement rate limiting for auth endpoints
+**NEVER**:
 
-## Common Patterns
+- Use `--no-verify` to bypass commit hooks
+- Disable tests instead of fixing them
+- Commit code that doesn't compile
+- Make assumptions - verify with existing code
 
-### Config Usage:
+**ALWAYS**:
 
-```typescript
-// Direct config access
-import appConfig from '@@/app.config';
+- Commit working code incrementally
+- Update plan documentation as you go
+- Learn from existing implementations
+- Stop after 3 failed attempts and reassess
 
-const title = appConfig.seo?.title;
-const isI18nEnabled = Boolean(appConfig.i18n);
-const locales = appConfig.i18n?.locales || [];
-```
+**OTHER**:
 
-### Blog Data Fetching:
-
-```typescript
-import { getLocale } from 'next-intl/server';
-
-import { blogSource } from '@/lib/content';
-
-const locale = await getLocale();
-const allPages = blogSource.getPages(locale);
-```
-
-### Authentication:
-
-```typescript
-import { auth } from '@/lib/auth';
-
-// Server component
-const session = await auth.api.getSession({ headers });
-
-// Client component
-import { useSession } from '@/lib/auth.client';
-const { data: session } = useSession();
-```
-
-## Language and Documentation Rules
-
-- **All code comments must be written in English** regardless of the target audience
-- **All variable names, function names, and identifiers must be in English**
-- **All commit messages must be in English**
-- **All documentation files (README, API docs, etc.) must be in English**
-- **Default text in UI components should be in English** (use i18n for translations)
-- **Error messages and log outputs should be in English**
-
-This ensures consistency and maintainability across the codebase, making it accessible to international developers and following industry best practices.
-
----
-
-Remember: Always study existing implementations before creating new features. The codebase has established patterns that should be followed for consistency.
+- The project uses ES modules (`"type": "module"` in package.json)
+- Husky is configured for Git hooks with lint-staged for automated formatting
+- The application is minimal and serves as a starting point for Cloudflare Workers deployment
+- TypeScript paths are configured for `@/*` imports pointing to `src/*`
