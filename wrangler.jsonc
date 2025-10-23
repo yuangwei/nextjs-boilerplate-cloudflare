@@ -14,7 +14,20 @@
 	},
 	"observability": {
 		"enabled": true
-	}
+	},
+	"r2_buckets": [
+		{
+			"bucket_name": "next-cf-app-bucket",
+			"binding": "R2_BUCKET",
+			"preview_bucket_name": "next-cf-app-dev-bucket"
+		}
+  ],
+	// "hyperdrive": [
+  //   {
+  //     "binding": "HYPERDRIVE",
+  //     "id": "WRANGLER_HYPERDRIVE_LOCAL_CONNECTION_STRING_HYPERDRIVE"
+  //   }
+  // ]
 	/**
 	 * Smart Placement
 	 * Docs: https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement
