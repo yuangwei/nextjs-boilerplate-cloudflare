@@ -8,7 +8,7 @@
 		"build": "next build",
 		"start": "next start",
 		"lint": "next lint",
-		"format": "biome format --write",
+		"format": "biome format --write ./src/**/*.{js,jsx,ts,tsx,json,md,mdx}",
 		"type-check": "tsc --noEmit",
 		"validate": "npm run type-check && npm run lint && npm run format:check && npm run build",
 		"deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
