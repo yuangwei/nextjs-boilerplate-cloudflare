@@ -39,10 +39,10 @@ async function getAuth() {
 				stripeClient: await getStripeClient(),
 				stripeWebhookSecret: env.STRIPE_WEBHOOK_SECRET!,
 				createCustomerOnSignUp: true,
-        subscription: {
-          enabled: true,
-          plans: subscribePlan,
-        },
+				subscription: {
+					enabled: true,
+					plans: subscribePlan,
+				},
 			}),
 		],
 	});
