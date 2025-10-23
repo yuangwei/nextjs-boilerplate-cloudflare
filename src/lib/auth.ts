@@ -2,10 +2,10 @@ import { betterAuth, User } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { nextCookies } from "better-auth/next-js";
 import { headers } from "next/headers";
+import { stripe } from "@better-auth/stripe";
 
 import { getDb } from "@/db";
 import { getEnv } from "./env";
-import { stripe } from "@better-auth/stripe";
 import { getStripeClient, subscribePlan } from "./stripe";
 
 let cachedAuth: ReturnType<typeof betterAuth> | null = null;
