@@ -5,7 +5,7 @@ config.config({ path: '.dev.vars' });
 
 export default defineConfig({
   out: './migrations',
-  schema: './src/db/schema.ts',
+  schema: './src/db/schema/index.ts',
   dialect: 'postgresql',
   dbCredentials: {
     url: process.env.DATABASE_URL!,

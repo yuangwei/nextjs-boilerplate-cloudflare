@@ -5,6 +5,8 @@ import { headers } from "next/headers";
 
 import { getDb } from "@/db";
 import { getEnv } from "./env";
+import { stripe } from "@better-auth/stripe";
+import { getStripeClient, subscribePlan } from "./stripe";
 
 let cachedAuth: ReturnType<typeof betterAuth> | null = null;
 
@@ -31,7 +33,18 @@ async function getAuth() {
 				clientSecret: env.GOOGLE_CLIENT_SECRET!,
 			},
 		},
-		plugins: [nextCookies()],
+		plugins: [
+			nextCookies(),
+			stripe({
+				stripeClient: await getStripeClient(),
+				stripeWebhookSecret: env.STRIPE_WEBHOOK_SECRET!,
+				createCustomerOnSignUp: true,
+        subscription: {
+          enabled: true,
+          plans: subscribePlan,
+        },
+			}),
+		],
 	});
 
 	return cachedAuth;
