@@ -1,50 +1,46 @@
 {
-  "name": "nextjs-cloudflare-worker-boilerplate",
-  "version": "0.1.0",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "format": "prettier --write \"./src/**/*.{ts,tsx,js,jsx,mdx}\" --cache",
-    "format:check": "prettier --check \"./src/**/*.{ts,tsx,js,jsx,mdx}\" --cache",
-    "type-check": "tsc --noEmit",
-    "validate": "npm run type-check && npm run lint && npm run format:check && npm run build",
-    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
-    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
-    "cf-typegen": "wrangler types --env-interface CloudflareEnv ./cloudflare-env.d.ts",
-    "prepare": "husky install"
-  },
-  "dependencies": {
-    "@opennextjs/cloudflare": "^1.6.5",
-    "next": "15.4.6",
-    "react": "19.1.0",
-    "react-dom": "19.1.0"
-  },
-  "devDependencies": {
-    "@commitlint/cli": "^19.8.1",
-    "@commitlint/config-conventional": "^19.8.1",
-    "@commitlint/types": "^19.8.1",
-    "@eslint/eslintrc": "^3",
-    "@tailwindcss/postcss": "^4",
-    "@trivago/prettier-plugin-sort-imports": "^5.2.2",
-    "@types/node": "^20.19.11",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "15.4.6",
-    "husky": "^9.1.7",
-    "prettier": "^3.6.2",
-    "prettier-plugin-tailwindcss": "^0.6.14",
-    "tailwindcss": "^4",
-    "typescript": "^5",
-    "wrangler": "^4.32.0"
-  },
-  "lint-staged": {
-    "./src/*.{js,jsx,ts,tsx,json,mdx}": [
-      "prettier --write"
-    ]
-  }
+	"name": "nextjs-cloudflare-worker-boilerplate",
+	"version": "0.1.0",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"dev": "next dev --turbopack",
+		"build": "next build",
+		"start": "next start",
+		"lint": "next lint",
+		"format": "biome format --write",
+		"type-check": "tsc --noEmit",
+		"validate": "npm run type-check && npm run lint && npm run format:check && npm run build",
+		"deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+		"preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
+		"cf-typegen": "wrangler types --env-interface CloudflareEnv ./cloudflare-env.d.ts",
+		"prepare": "husky install"
+	},
+	"dependencies": {
+		"@opennextjs/cloudflare": "^1.6.5",
+		"next": "15.4.6",
+		"react": "19.1.0",
+		"react-dom": "19.1.0"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.2.7",
+		"@commitlint/cli": "^19.8.1",
+		"@commitlint/config-conventional": "^19.8.1",
+		"@commitlint/types": "^19.8.1",
+		"@eslint/eslintrc": "^3",
+		"@tailwindcss/postcss": "^4",
+		"@trivago/prettier-plugin-sort-imports": "^5.2.2",
+		"@types/node": "^20.19.11",
+		"@types/react": "^19",
+		"@types/react-dom": "^19",
+		"husky": "^9.1.7",
+		"tailwindcss": "^4",
+		"typescript": "^5",
+		"wrangler": "^4.32.0"
+	},
+	"lint-staged": {
+		"./src/*.{js,jsx,ts,tsx,json,mdx}": [
+			"prettier --write"
+		]
+	}
 }

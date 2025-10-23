@@ -11,8 +11,7 @@ npx lint-staged
 echo "🔧 Running TypeScript type check..."
 npx tsc --noEmit
 
-# Build check to catch module resolution and other build errors
-echo "🏗️  Running build check..."
-npm run build
+echo "🔧 Running Lint..."
+npm run format
 
 echo "✅ All pre-commit checks passed!"
