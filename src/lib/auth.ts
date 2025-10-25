@@ -11,68 +11,68 @@ import { getStripeClient, subscribePlan } from "./stripe";
 let cachedAuth: ReturnType<typeof betterAuth> | null = null;
 
 async function getAuth() {
-  if (cachedAuth) {
-    return cachedAuth;
-  }
-  const provider = "sqlite"; // or "pg" based on your database
-  const env = await getEnv();
-  const db = await getDB(provider);
+	if (cachedAuth) {
+		return cachedAuth;
+	}
+	const provider = "sqlite"; // or "pg" based on your database
+	const env = await getEnv();
+	const db = await getDB(provider);
 
-  cachedAuth = betterAuth({
-    secret: env.BETTER_AUTH_SECRET,
-    database: drizzleAdapter(db, {
-      provider,
-    }),
-    emailAndPassword: {
-      enabled: true,
-    },
-    socialProviders: {
-      google: {
-        enabled: true,
-        clientId: env.GOOGLE_CLIENT_ID!,
-        clientSecret: env.GOOGLE_CLIENT_SECRET!,
-      },
-    },
-    plugins: [
-      nextCookies(),
-      stripe({
-        stripeClient: await getStripeClient(),
-        stripeWebhookSecret: env.STRIPE_WEBHOOK_SECRET!,
-        createCustomerOnSignUp: true,
-        subscription: {
-          enabled: true,
-          plans: subscribePlan,
-        },
-      }),
-    ],
-  });
+	cachedAuth = betterAuth({
+		secret: env.BETTER_AUTH_SECRET,
+		database: drizzleAdapter(db, {
+			provider,
+		}),
+		emailAndPassword: {
+			enabled: true,
+		},
+		socialProviders: {
+			google: {
+				enabled: true,
+				clientId: env.GOOGLE_CLIENT_ID!,
+				clientSecret: env.GOOGLE_CLIENT_SECRET!,
+			},
+		},
+		plugins: [
+			nextCookies(),
+			stripe({
+				stripeClient: await getStripeClient(),
+				stripeWebhookSecret: env.STRIPE_WEBHOOK_SECRET!,
+				createCustomerOnSignUp: true,
+				subscription: {
+					enabled: true,
+					plans: subscribePlan,
+				},
+			}),
+		],
+	});
 
-  return cachedAuth;
+	return cachedAuth;
 }
 /**
  * Get the current authenticated user from the session
  * Returns null if no user is authenticated
  */
 export async function getCurrentUser(): Promise<User | null> {
-  try {
-    const auth = await getAuth();
-    const session = await auth.api.getSession({
-      headers: await headers(),
-    });
+	try {
+		const auth = await getAuth();
+		const session = await auth.api.getSession({
+			headers: await headers(),
+		});
 
-    if (!session?.user) {
-      return null;
-    }
-    // @ts-ignore
-    return {
-      id: session.user.id,
-      name: session.user.name,
-      email: session.user.email,
-    };
-  } catch (error) {
-    console.error("Error getting current user:", error);
-    return null;
-  }
+		if (!session?.user) {
+			return null;
+		}
+		// @ts-ignore
+		return {
+			id: session.user.id,
+			name: session.user.name,
+			email: session.user.email,
+		};
+	} catch (error) {
+		console.error("Error getting current user:", error);
+		return null;
+	}
 }
 
 /**
@@ -80,43 +80,43 @@ export async function getCurrentUser(): Promise<User | null> {
  * Use this when authentication is required
  */
 export async function requireAuth(): Promise<User> {
-  const user = await getCurrentUser();
+	const user = await getCurrentUser();
 
-  if (!user) {
-    throw new Error("Authentication required");
-  }
+	if (!user) {
+		throw new Error("Authentication required");
+	}
 
-  return user;
+	return user;
 }
 
 /**
  * Check if a user is authenticated
  */
 export async function isAuthenticated(): Promise<boolean> {
-  const user = await getCurrentUser();
-  return user !== null;
+	const user = await getCurrentUser();
+	return user !== null;
 }
 
 /**
  * Get the auth instance for use in server actions and API routes
  */
 export async function getAuthInstance() {
-  return await getAuth();
+	return await getAuth();
 }
 
 /**
  * Get session information
  */
 export async function getSession() {
-  try {
-    const auth = await getAuth();
-    return await auth.api.getSession({
-      headers: await headers(),
-    });
-  } catch (error) {
-    console.error("Error getting session:", error);
-    return null;
-  }
+	try {
+		const auth = await getAuth();
+		return await auth.api.getSession({
+			headers: await headers(),
+		});
+	} catch (error) {
+		console.error("Error getting session:", error);
+		return null;
+	}
 }
 
 export const auth = await getAuth();
